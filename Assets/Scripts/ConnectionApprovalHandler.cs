@@ -24,7 +24,7 @@ public class ConnectionApprovalHandler : MonoBehaviour
 
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
-        response.Approved = false;
+        response.Approved = true;
         response.Reason = "Testing the declined approval message";
     }
 
