@@ -5,12 +5,16 @@ namespace HelloWorld
 {
     public class HelloWorldManager : MonoBehaviour
     {
+        private static string joinCode = "";
+        [SerializeField]
+        private GameObject testRelay;
+
         void OnGUI()
         {
             GUILayout.BeginArea(new Rect(10, 10, 300, 300));
             if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer)
             {
-                StartButtons();
+                StartButtons(testRelay);
             }
             else
             {
@@ -22,11 +26,25 @@ namespace HelloWorld
             GUILayout.EndArea();
         }
 
-        static void StartButtons()
+        static void StartButtons(GameObject testRelay)
         {
-            if (GUILayout.Button("Host")) NetworkManager.Singleton.StartHost();
-            if (GUILayout.Button("Client")) NetworkManager.Singleton.StartClient();
-            if (GUILayout.Button("Server")) NetworkManager.Singleton.StartServer();
+            if (GUILayout.Button("Host"))
+            {
+                testRelay.GetComponent<TestRelay>().CreateRelay();
+                ChangeJoinCode(testRelay.GetComponent<TestRelay>().GetJoinCode());
+                //NetworkManager.Singleton.StartHost();
+            }
+            if (GUILayout.Button("Client"))
+            {
+                testRelay.GetComponent<TestRelay>().JoinRelay(joinCode);
+                //NetworkManager.Singleton.StartClient();
+            }
+            if (GUILayout.Button("Server"))
+            {
+                testRelay.GetComponent<TestRelay>().CreateRelay();
+                ChangeJoinCode(testRelay.GetComponent<TestRelay>().GetJoinCode());
+                //NetworkManager.Singleton.StartServer();
+            }
         }
 
         static void StatusLabels()
@@ -37,6 +55,7 @@ namespace HelloWorld
             GUILayout.Label("Transport: " +
                 NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetType().Name);
             GUILayout.Label("Mode: " + mode);
+            GUILayout.Label("Join Code: " + joinCode);
         }
 
         static void SubmitNewPosition()
@@ -55,6 +74,11 @@ namespace HelloWorld
                     player.Move();
                 }
             }
+        }
+
+        public static void ChangeJoinCode(string newCode)
+        {
+            joinCode = newCode;
         }
     }
 }
