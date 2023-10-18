@@ -20,7 +20,7 @@ namespace HelloWorld
             {
                 StatusLabels();
 
-                SubmitNewPosition();
+                //SubmitNewPosition();
             }
 
             GUILayout.EndArea();
@@ -30,7 +30,7 @@ namespace HelloWorld
         {
             if (GUILayout.Button("Host"))
             {
-                testRelay.GetComponent<TestRelay>().CreateRelay();
+                testRelay.GetComponent<TestRelay>().CreateRelay(true);
                 ChangeJoinCode(testRelay.GetComponent<TestRelay>().GetJoinCode());
                 //NetworkManager.Singleton.StartHost();
             }
@@ -41,7 +41,7 @@ namespace HelloWorld
             }
             if (GUILayout.Button("Server"))
             {
-                testRelay.GetComponent<TestRelay>().CreateRelay();
+                testRelay.GetComponent<TestRelay>().CreateRelay(false);
                 ChangeJoinCode(testRelay.GetComponent<TestRelay>().GetJoinCode());
                 //NetworkManager.Singleton.StartServer();
             }

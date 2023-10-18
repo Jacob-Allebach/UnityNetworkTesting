@@ -19,8 +19,15 @@ public class PlayerController : NetworkBehaviour
         if (Input.GetKey(KeyCode.D)) movement.x = +1f;
 
         float moveSpeed = 3f;
-        
-        MovementServerRpc(movement, moveSpeed);
+
+        if (NetworkManager.Singleton.IsHost)
+        {
+            Position.Value += movement * moveSpeed * Time.deltaTime;
+        }
+        else
+        {
+            MovementServerRpc(movement, moveSpeed);
+        }
 
         transform.position = Position.Value;
     }

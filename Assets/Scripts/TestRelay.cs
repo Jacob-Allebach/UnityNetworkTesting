@@ -12,6 +12,7 @@ using UnityEngine;
 public class TestRelay : MonoBehaviour
 {
     public string publicJoinCode = "";
+    public string playerID = "";
 
     // Start is called before the first frame update
     private async void Start()
@@ -23,17 +24,19 @@ public class TestRelay : MonoBehaviour
             Debug.Log("Signed in " + AuthenticationService.Instance.PlayerId);
         };
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        playerID = AuthenticationService.Instance.PlayerId;
+        
     }
 
     void OnGUI()
     {
         GUILayout.BeginArea(new Rect(400, 10, 300, 300));
         GUILayout.Label("Join Code: " + publicJoinCode);
-
+        GUILayout.Label("Player ID: " + playerID);
         GUILayout.EndArea();
     }
 
-    public async void CreateRelay()
+    public async void CreateRelay(bool host)
     {
         try
         {
@@ -47,7 +50,14 @@ public class TestRelay : MonoBehaviour
             RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 
-            NetworkManager.Singleton.StartHost();
+            if (host)
+            {
+                NetworkManager.Singleton.StartHost();
+            }
+            else
+            {
+                NetworkManager.Singleton.StartServer();
+            }
         }
         catch (RelayServiceException e)
         {
@@ -66,6 +76,8 @@ public class TestRelay : MonoBehaviour
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 
             NetworkManager.Singleton.StartClient();
+
+            publicJoinCode = joinCode;
         }
         catch (RelayServiceException e)
         {
@@ -76,5 +88,10 @@ public class TestRelay : MonoBehaviour
     public string GetJoinCode()
     {
         return publicJoinCode;
+    }
+
+    public string GetPlayerId()
+    {
+        return playerID;
     }
 }
