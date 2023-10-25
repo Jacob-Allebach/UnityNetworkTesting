@@ -8,6 +8,8 @@ public class PlayerController : NetworkBehaviour
 
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
     public NetworkVariable<bool> host = new NetworkVariable<bool>(false);
+    [SerializeField]
+    public GameObject orbPrefab;
 
     private void Start()
     {
@@ -30,6 +32,8 @@ public class PlayerController : NetworkBehaviour
             float moveSpeed = 3f;
 
             MovementServerRpc(movement, moveSpeed);
+
+            if (Input.GetKeyDown(KeyCode.O)) OrbSpawnServerRpc();
         }
 
         transform.position = Position.Value;
@@ -45,5 +49,12 @@ public class PlayerController : NetworkBehaviour
     void SetHostServerRpc()
     {
         host.Value = true;
+    }
+
+    [ServerRpc]
+    void OrbSpawnServerRpc()
+    {
+        GameObject newOrb = Instantiate(orbPrefab, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
+        newOrb.GetComponent<NetworkObject>().Spawn();
     }
 }
