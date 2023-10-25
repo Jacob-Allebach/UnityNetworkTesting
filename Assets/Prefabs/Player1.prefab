@@ -13,8 +13,6 @@ GameObject:
   - component: {fileID: 3124864399082381234}
   - component: {fileID: 5532585807462108733}
   - component: {fileID: 6467849744365278166}
-  - component: {fileID: 4552310223353016549}
-  - component: {fileID: -7576578239000264708}
   - component: {fileID: 3368615105440474099}
   - component: {fileID: 1933540746652513418}
   m_Layer: 0
@@ -132,32 +130,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &4552310223353016549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6639316295740025649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 344417a9dcd14c648825990513fae55e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-7576578239000264708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6639316295740025649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 112f258ffd465dd459199f8cf7d5dd57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Position:
-    m_InternalValue: {x: 0, y: 0, z: 0}
 --- !u!114 &3368615105440474099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,3 +174,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
+  host:
+    m_InternalValue: 0

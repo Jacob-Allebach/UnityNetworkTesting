@@ -1387,6 +1387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   publicJoinCode: 
+  playerID: 
 --- !u!4 &2072617865
 Transform:
   m_ObjectHideFlags: 0
