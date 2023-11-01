@@ -2,14 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : NetworkBehaviour
 {
 
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
     public NetworkVariable<bool> host = new NetworkVariable<bool>(false);
+    public NetworkVariable<int> health = new NetworkVariable<int>(3);
     [SerializeField]
     public GameObject orbPrefab;
+    [SerializeField]
+    public GameObject healthTag;
+    public int cooldown = 0;
 
     private void Start()
     {
@@ -33,10 +38,39 @@ public class PlayerController : NetworkBehaviour
 
             MovementServerRpc(movement, moveSpeed);
 
-            if (Input.GetKeyDown(KeyCode.O)) OrbSpawnServerRpc();
+            if (cooldown < 0)
+            {
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    OrbSpawnServerRpc(new Vector3(-1, 0, 0));
+                    cooldown = 100;
+                }
+                if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    OrbSpawnServerRpc(new Vector3(1, 0, 0));
+                    cooldown = 100;
+                }
+                if (Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    OrbSpawnServerRpc(new Vector3(0, 0, 1));
+                    cooldown = 100;
+                }
+                if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    OrbSpawnServerRpc(new Vector3(0, 0, -1));
+                    cooldown = 100;
+                }
+            }
         }
 
+        healthTag.GetComponent<TextMeshPro>().SetText($"{health.Value}");
+        cooldown -= 1;
         transform.position = Position.Value;
+    }
+
+    public void takeDamage()
+    {
+        health.Value--;
     }
 
     [ServerRpc]
@@ -52,9 +86,10 @@ public class PlayerController : NetworkBehaviour
     }
 
     [ServerRpc]
-    void OrbSpawnServerRpc()
+    void OrbSpawnServerRpc(Vector3 direction)
     {
-        GameObject newOrb = Instantiate(orbPrefab, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
+        GameObject newOrb = Instantiate(orbPrefab, new Vector3(transform.position.x, 0.5f, transform.position.z) + direction, Quaternion.identity);
         newOrb.GetComponent<NetworkObject>().Spawn();
+        newOrb.GetComponent<OrbBehavior>().SetVelocity(direction);
     }
 }
